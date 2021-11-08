@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--    以上约束中添加了事务支持 tx-->
+
+    <context:component-scan base-package="com.wtu"/>
+    <context:property-placeholder location="classpath:mybatis/db/db.properties"/>
+    <bean id="mydata" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${mydriver}"/>
+        <property name="jdbcUrl" value="${myurl}"/>
+        <property name="user" value="${myusername}"/>
+        <property name="password" value="${mypassword}"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="mydata"/>
+        <property name="typeAliasesPackage" value="com.wtu.entity"/>
+        <property name="mapperLocations" value="classpath:mybatis/mapper/ThemeMapper.xml"/>
+        <property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml"/>
+    </bean>
+    
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.wtu.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+</beans>

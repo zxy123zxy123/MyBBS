@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wtu.mapper.ThemeMapper">
+
+    <select id="allTheme" parameterType="com.wtu.util.Params" resultType="Theme">
+        select * from theme
+        <where>
+            <if test="tname!=null and tname!=''">
+                tname like '%${tname}%'
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteById">
+        delete from theme where tid = #{id}
+    </delete>
+
+    <insert id="insertTheme" parameterType="Theme">
+        insert into theme(tname,host,status)
+        values (#{tname},#{host},#{status})
+    </insert>
+
+
+</mapper>
